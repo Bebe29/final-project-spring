@@ -75,10 +75,20 @@ public class TransactionDetailServiceImpl implements TransactionDetailService {
 
     @Override
     @Transactional
-    public void getTransactionDetailByTransactionId(int transactionId, String detail, int userId) {
-        Iterable<TransactionDetail> findItem = transactionDetailRepo.getTransactionDetailByTransactionId(transactionId);
+    public Iterable<TransactionDetail> getTransactionDetailByTransactionId(int transactionId) {
+        return transactionDetailRepo.getTransactionDetailByTransactionId(transactionId);
+        // String message = "<h1>Thankyou for your puschase<h1>\n";
+        // message += "<p>" + detail + "<p>";
+        // User user = userRepo.findById(userId).get();
+        // emailUtil.sendEmail(user.getEmail(), "Invoice Purchase", message);
+    }
+
+    @Override
+    @Transactional
+    public void sendInvoce(String detail, int subTotalPrice, int userId) {
         String message = "<h1>Thankyou for your puschase<h1>\n";
-        message += "<p>" + detail + "<p>";
+        message += detail;
+        message += "<h3>Sub Total Price :" + subTotalPrice + "<h3>";
         User user = userRepo.findById(userId).get();
         emailUtil.sendEmail(user.getEmail(), "Invoice Purchase", message);
     }

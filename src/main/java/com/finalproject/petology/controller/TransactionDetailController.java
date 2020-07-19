@@ -26,10 +26,9 @@ public class TransactionDetailController {
         return transactionDetailService.postTransactionDetail(transactionDetail, transactionId, productId);
     }
 
-    @GetMapping("/{transactionId}")
-    public void getTransactionDetailByTransactionId(@PathVariable int transactionId, @RequestParam String detail,
-            @RequestParam int userId) {
-        transactionDetailService.getTransactionDetailByTransactionId(transactionId, detail, userId);
+    @GetMapping("/transactionId/{transactionId}")
+    public Iterable<TransactionDetail> getTransactionDetailByTransactionId(@PathVariable int transactionId) {
+        return transactionDetailService.getTransactionDetailByTransactionId(transactionId);
     }
 
     @GetMapping("/{productId}")
@@ -45,5 +44,10 @@ public class TransactionDetailController {
     @GetMapping("/purchase")
     public Iterable<Object> getTransactionDetailByBuy() {
         return transactionDetailService.getTransactionDetailByBuy();
+    }
+
+    @GetMapping("/invoice")
+    public void sendInvoce(@RequestParam String detail, @RequestParam int subTotalPrice, @RequestParam int userId) {
+        transactionDetailService.sendInvoce(detail, subTotalPrice, userId);
     }
 }

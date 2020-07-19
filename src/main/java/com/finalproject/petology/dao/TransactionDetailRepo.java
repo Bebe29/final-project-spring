@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface TransactionDetailRepo extends JpaRepository<TransactionDetail, Integer> {
-    @Query(value = "SELECT * FROM transaction_details JOIN transactions ON transaction_details.transaction_id= transactions.id JOIN products ON transaction_details.product_id= products.id WHERE transactions.id = :transactionId", nativeQuery = true)
+    @Query(value = "SELECT * FROM transaction_details JOIN transactions ON transaction_details.transaction_id= transactions.id WHERE transactions.id = :transactionId", nativeQuery = true)
     public Iterable<TransactionDetail> getTransactionDetailByTransactionId(@Param("transactionId") int transactionId);
 
     @Query(value = "SELECT COUNT(product_id) FROM transaction_details WHERE product_id = :productId", nativeQuery = true)
