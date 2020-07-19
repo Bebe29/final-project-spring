@@ -34,26 +34,7 @@ public interface ProductService {
 
     public List<Product> getNewestItem();
 
-    // public Iterable<Product> getPaginationDataProduct(int pageSize, int page);
+    public Iterable<Product> getPaginationDataProduct(int pageSize, int page);
 
-    // public Iterable<Product> sortProductByNameAsc(int pagesize, int page);
-
-    // public Iterable<Product> sortProductByNameDesc(int pagesize, int page);
-
-    // public Iterable<Product> sortProductByPriceAsc(int pagesize, int page);
-
-    // public Iterable<Product> sortProductByPriceDesc(int pagesize, int page);
-
-    // public Iterable<Product> findProductByNameSortByNameAsc(String searchProduct,
-    // int pageSize, int page);
-
-    // public Iterable<Product> findProductByNameSortByNameDesc(String
-    // searchProduct, int pageSize, int page);
-
-    // public Iterable<Product> findProductByNameSortByPriceAsc(String
-    // searchProduct, int pageSize, int page);
-
-    // public Iterable<Product> findProductByNameSortByPriceDesc(String
-    // searchProduct, int pageSize, int page);
-
+    public Iterable<Product> findProductByName(String productName, int pageSize, int page);
 }

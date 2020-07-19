@@ -188,75 +188,18 @@ public class ProductServiceImpl implements ProductService {
         return productRepo.getNewestItem();
     }
 
-    // @Override
-    // @Transactional
-    // public Iterable<Product> getPaginationDataProduct(int pageSize, int page) {
-    // int offset = (page - 1) * pageSize;
-    // return productRepo.getPaginationDataProduct(pageSize, offset);
-    // }
+    @Override
+    @Transactional
+    public Iterable<Product> getPaginationDataProduct(int pageSize, int page) {
+        int offset = page * pageSize;
+        return productRepo.getPaginationDataProduct(pageSize, offset);
+    }
 
-    // @Override
-    // @Transactional
-    // public Iterable<Product> sortProductByNameAsc(int pagesize, int page) {
-    // int offset = (page - 1) * pagesize;
-    // return productRepo.sortProductByNameAsc(pagesize, offset);
-    // }
-
-    // @Override
-    // @Transactional
-    // public Iterable<Product> sortProductByNameDesc(int pagesize, int page) {
-    // int offset = (page - 1) * pagesize;
-    // return productRepo.sortProductByNameDesc(pagesize, offset);
-    // }
-
-    // @Override
-    // @Transactional
-    // public Iterable<Product> sortProductByPriceAsc(int pagesize, int page) {
-    // int offset = (page - 1) * pagesize;
-    // return productRepo.sortProductByPriceAsc(pagesize, offset);
-    // }
-
-    // @Override
-    // @Transactional
-    // public Iterable<Product> sortProductByPriceDesc(int pagesize, int page) {
-    // int offset = (page - 1) * pagesize;
-    // return productRepo.sortProductByPriceDesc(pagesize, offset);
-    // }
-
-    // @Override
-    // @Transactional
-    // public Iterable<Product> findProductByNameSortByNameAsc(String searchProduct,
-    // int pageSize, int page) {
-    // int offset = (page - 1) * pageSize;
-    // return productRepo.findProductByNameSortByNameAsc(searchProduct, pageSize,
-    // offset);
-    // }
-
-    // @Override
-    // @Transactional
-    // public Iterable<Product> findProductByNameSortByNameDesc(String
-    // searchProduct, int pageSize, int page) {
-    // int offset = (page - 1) * pageSize;
-    // return productRepo.findProductByNameSortByNameDesc(searchProduct, pageSize,
-    // offset);
-    // }
-
-    // @Override
-    // @Transactional
-    // public Iterable<Product> findProductByNameSortByPriceAsc(String
-    // searchProduct, int pageSize, int page) {
-    // int offset = (page - 1) * pageSize;
-    // return productRepo.findProductByNameSortByPriceAsc(searchProduct, pageSize,
-    // offset);
-    // }
-
-    // @Override
-    // @Transactional
-    // public Iterable<Product> findProductByNameSortByPriceDesc(String
-    // searchProduct, int pageSize, int page) {
-    // int offset = (page - 1) * pageSize;
-    // return productRepo.findProductByNameSortByPriceDesc(searchProduct, pageSize,
-    // offset);
-    // }
+    @Override
+    @Transactional
+    public Iterable<Product> findProductByName(String productName, int pageSize, int page) {
+        int offset = page * pageSize;
+        return productRepo.findProductByName(productName, pageSize, offset);
+    }
 
 }
