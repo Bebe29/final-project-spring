@@ -1,13 +1,19 @@
 package com.finalproject.petology.entity;
 
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "users")
@@ -28,6 +34,14 @@ public class User {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_profile_id")
 	private UserProfile userProfile;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<Cart> carts;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<Transaction> transactions;
 
 	public int getId() {
 		return id;
@@ -109,11 +123,28 @@ public class User {
 		this.userProfile = userProfile;
 	}
 
+	public List<Cart> getCarts() {
+		return carts;
+	}
+
+	public void setCarts(List<Cart> carts) {
+		this.carts = carts;
+	}
+
+	public List<Transaction> getTransactions() {
+		return transactions;
+	}
+
+	public void setTransactions(List<Transaction> transactions) {
+		this.transactions = transactions;
+	}
+
 	@Override
 	public String toString() {
-		return "User [email=" + email + ", fullName=" + fullName + ", id=" + id + ", isVerified=" + isVerified
-				+ ", password=" + password + ", passwordToken=" + passwordToken + ", role=" + role + ", userProfile="
-				+ userProfile + ", username=" + username + ", verifyToken=" + verifyToken + "]";
+		return "User [carts=" + carts + ", email=" + email + ", fullName=" + fullName + ", id=" + id + ", isVerified="
+				+ isVerified + ", password=" + password + ", passwordToken=" + passwordToken + ", role=" + role
+				+ ", transactions=" + transactions + ", userProfile=" + userProfile + ", username=" + username
+				+ ", verifyToken=" + verifyToken + "]";
 	}
 
 }

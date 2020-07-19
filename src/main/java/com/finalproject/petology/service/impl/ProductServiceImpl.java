@@ -16,8 +16,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.finalproject.petology.dao.CategoryRepo;
+import com.finalproject.petology.dao.PackageRepo;
 import com.finalproject.petology.dao.ProductRepo;
 import com.finalproject.petology.entity.Category;
+import com.finalproject.petology.entity.Package;
 import com.finalproject.petology.entity.Product;
 import com.finalproject.petology.service.ProductService;
 
@@ -39,6 +41,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private CategoryRepo categoryRepo;
+
+    @Autowired
+    private PackageRepo packageRepo;
 
     // private String uploadProductPath = System.getProperty("user.dir")
     // + "\\src\\main\\resources\\static\\images\\products\\";
@@ -112,7 +117,6 @@ public class ProductServiceImpl implements ProductService {
         Product findProduct = productRepo.findById(product.getId()).get();
         if (findProduct == null)
             throw new RuntimeException("Product not found");
-
         return productRepo.save(product);
     }
 
@@ -122,7 +126,6 @@ public class ProductServiceImpl implements ProductService {
         Product findProduct = productRepo.findById(productId).get();
         if (findProduct == null)
             throw new RuntimeException("Product not found with id:" + productId);
-
         if (findProduct.getCategory() == null) {
             productRepo.deleteById(productId);
         } else {
@@ -132,8 +135,23 @@ public class ProductServiceImpl implements ProductService {
             List<Product> productsCategory = findCategory.getProducts();
             productsCategory.remove(findProduct);
             findProduct.setCategory(null);
-
-            productRepo.deleteById(productId);
+            if (findProduct.getType().equalsIgnoreCase("Package")) {
+                Package findPackage = packageRepo.findByIdInProduct(productId).get();
+                findPackage.getProducts().forEach(product -> {
+                    List<Package> productPackages = product.getPackages();
+                    productPackages.remove(findPackage);
+                    productRepo.save(product);
+                });
+                packageRepo.deleteById(findPackage.getId());
+                productRepo.deleteById(productId);
+            } else if (findProduct.getType().equalsIgnoreCase("Product")) {
+                findProduct.getPackages().forEach(pack -> {
+                    List<Product> packageProducts = pack.getProducts();
+                    packageProducts.remove(findProduct);
+                    packageRepo.save(pack);
+                });
+                productRepo.deleteById(productId);
+            }
         }
     }
 
@@ -145,62 +163,100 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public Iterable<Product> getPaginationDataProduct(int pageSize, int page) {
-        int offset = (page - 1) * pageSize;
-        return productRepo.getPaginationDataProduct(pageSize, offset);
+    public List<Product> findProductTypeProduct() {
+        return productRepo.findProductTypeProduct();
+    }
+
+    @Override
+    @Transactional
+    public List<Product> findProductTypePackage() {
+        return productRepo.findProductTypePackage();
+    }
+
+    @Override
+    @Transactional
+    public Product addProductToPackage(int productId, int packageId) {
+        Product findProduct = productRepo.findById(productId).get();
+        Package findPackage = packageRepo.findByIdInProduct(packageId).get();
+        findProduct.getPackages().add(findPackage);
+        return productRepo.save(findProduct);
+    }
+
+    @Override
+    @Transactional
+    public List<Product> getNewestItem() {
+        return productRepo.getNewestItem();
     }
 
     // @Override
     // @Transactional
-    // public Iterable<Product> filterProduct(String searchProduct) {
-    // return productRepo.findProductByName(searchProduct);
+    // public Iterable<Product> getPaginationDataProduct(int pageSize, int page) {
+    // int offset = (page - 1) * pageSize;
+    // return productRepo.getPaginationDataProduct(pageSize, offset);
     // }
 
     // @Override
     // @Transactional
-    // public List<Product> sortProductByNameAsc() {
-    // return productRepo.sortProductByNameAsc();
+    // public Iterable<Product> sortProductByNameAsc(int pagesize, int page) {
+    // int offset = (page - 1) * pagesize;
+    // return productRepo.sortProductByNameAsc(pagesize, offset);
     // }
 
     // @Override
     // @Transactional
-    // public List<Product> sortProductByNameDesc() {
-    // return productRepo.sortProductByNameDesc();
+    // public Iterable<Product> sortProductByNameDesc(int pagesize, int page) {
+    // int offset = (page - 1) * pagesize;
+    // return productRepo.sortProductByNameDesc(pagesize, offset);
     // }
 
     // @Override
     // @Transactional
-    // public List<Product> sortProductByPriceAsc() {
-    // return productRepo.sortProductByPriceAsc();
+    // public Iterable<Product> sortProductByPriceAsc(int pagesize, int page) {
+    // int offset = (page - 1) * pagesize;
+    // return productRepo.sortProductByPriceAsc(pagesize, offset);
     // }
 
     // @Override
     // @Transactional
-    // public List<Product> sortProductByPriceDesc() {
-    // return productRepo.sortProductByPriceDesc();
+    // public Iterable<Product> sortProductByPriceDesc(int pagesize, int page) {
+    // int offset = (page - 1) * pagesize;
+    // return productRepo.sortProductByPriceDesc(pagesize, offset);
     // }
 
     // @Override
     // @Transactional
-    // public List<Product> sortProductOfCategoryByNameAsc(int categoryId) {
-    // return productRepo.sortProductOfCategoryByNameAsc(categoryId);
+    // public Iterable<Product> findProductByNameSortByNameAsc(String searchProduct,
+    // int pageSize, int page) {
+    // int offset = (page - 1) * pageSize;
+    // return productRepo.findProductByNameSortByNameAsc(searchProduct, pageSize,
+    // offset);
     // }
 
     // @Override
     // @Transactional
-    // public List<Product> sortProductOfCategoryByNameDesc(int categoryId) {
-    // return productRepo.sortProductOfCategoryByNameDesc(categoryId);
+    // public Iterable<Product> findProductByNameSortByNameDesc(String
+    // searchProduct, int pageSize, int page) {
+    // int offset = (page - 1) * pageSize;
+    // return productRepo.findProductByNameSortByNameDesc(searchProduct, pageSize,
+    // offset);
     // }
 
     // @Override
     // @Transactional
-    // public List<Product> sortProductOfCategoryByPriceAsc(int categoryId) {
-    // return productRepo.sortProductOfCategoryByPriceAsc(categoryId);
+    // public Iterable<Product> findProductByNameSortByPriceAsc(String
+    // searchProduct, int pageSize, int page) {
+    // int offset = (page - 1) * pageSize;
+    // return productRepo.findProductByNameSortByPriceAsc(searchProduct, pageSize,
+    // offset);
     // }
 
     // @Override
     // @Transactional
-    // public List<Product> sortProductOfCategoryByPriceDesc(int categoryId) {
-    // return productRepo.sortProductOfCategoryByPriceDesc(categoryId);
+    // public Iterable<Product> findProductByNameSortByPriceDesc(String
+    // searchProduct, int pageSize, int page) {
+    // int offset = (page - 1) * pageSize;
+    // return productRepo.findProductByNameSortByPriceDesc(searchProduct, pageSize,
+    // offset);
     // }
+
 }

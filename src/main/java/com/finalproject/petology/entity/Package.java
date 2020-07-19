@@ -13,6 +13,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "packages")
 public class Package {
@@ -24,7 +26,8 @@ public class Package {
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH })
     @JoinTable(name = "package_product", joinColumns = @JoinColumn(name = "package_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private List<Package> packages;
+    @JsonIgnore
+    private List<Product> products;
 
     public int getId() {
         return id;
@@ -42,17 +45,17 @@ public class Package {
         this.idInProduct = idInProduct;
     }
 
-    public List<Package> getPackages() {
-        return packages;
+    public List<Product> getProducts() {
+        return products;
     }
 
-    public void setPackages(List<Package> packages) {
-        this.packages = packages;
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 
     @Override
     public String toString() {
-        return "Package [id=" + id + ", idInProduct=" + idInProduct + ", packages=" + packages + "]";
+        return "Package [id=" + id + ", idInProduct=" + idInProduct + ", products=" + products + "]";
     }
 
 }

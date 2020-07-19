@@ -35,6 +35,16 @@ public class ProductController {
         return productService.getAllProduct();
     }
 
+    @GetMapping("/typeProduct")
+    public List<Product> findProductTypeProduct() {
+        return productService.findProductTypeProduct();
+    }
+
+    @GetMapping("/typePackage")
+    public List<Product> findProductTypePackage() {
+        return productService.findProductTypePackage();
+    }
+
     @PostMapping("/categories/{categoryId}")
     public Product addNewProducts(@RequestBody Product product, @PathVariable int categoryId) {
         return productService.addNewProducts(product, categoryId);
@@ -66,57 +76,76 @@ public class ProductController {
         return productService.getProductById(productId);
     }
 
-    @GetMapping
-    public Iterable<Product> getPaginationDataProduct(@RequestParam int pageSize, @RequestParam int page) {
-        return productService.getPaginationDataProduct(pageSize, page);
+    @PostMapping("/{productId}/package/{packageId}")
+    public Product addProductToPackage(@PathVariable int productId, @PathVariable int packageId) {
+        return productService.addProductToPackage(productId, packageId);
     }
 
-    // @GetMapping("/filter")
-    // public Iterable<Product> filterProduct(@RequestParam String searchProduct) {
-    // return productService.filterProduct(searchProduct);
+    @GetMapping("/newest")
+    public List<Product> getNewestItem() {
+        return productService.getNewestItem();
+    }
+
+    // @GetMapping
+    // public Iterable<Product> getPaginationDataProduct(@RequestParam int pageSize,
+    // @RequestParam int page) {
+    // return productService.getPaginationDataProduct(pageSize, page);
     // }
 
-    // @GetMapping("/sort/nameAsc")
-    // public List<Product> sortProductByNameAsc() {
-    // return productService.sortProductByNameAsc();
+    // @GetMapping("/nameAsc")
+    // public Iterable<Product> sortProductByNameAsc(@RequestParam int pageSize,
+    // @RequestParam int page) {
+    // return productService.sortProductByNameAsc(pageSize, page);
     // }
 
-    // @GetMapping("/sort/nameDesc")
-    // public List<Product> sortProductByNameDesc() {
-    // return productService.sortProductByNameDesc();
+    // @GetMapping("/nameDesc")
+    // public Iterable<Product> sortProductByNameDesc(@RequestParam int pageSize,
+    // @RequestParam int page) {
+    // return productService.sortProductByNameDesc(pageSize, page);
     // }
 
-    // @GetMapping("/sort/priceAsc")
-    // public List<Product> sortProductByPriceAsc() {
-    // return productService.sortProductByPriceAsc();
+    // @GetMapping("/priceAsc")
+    // public Iterable<Product> sortProductByPriceAsc(@RequestParam int pageSize,
+    // @RequestParam int page) {
+    // return productService.sortProductByPriceAsc(pageSize, page);
     // }
 
-    // @GetMapping("/sort/priceDesc")
-    // public List<Product> sortProductByPriceDesc() {
-    // return productService.sortProductByPriceDesc();
+    // @GetMapping("/pricaDesc")
+    // public Iterable<Product> sortProductByPriceDesc(@RequestParam int pageSize,
+    // @RequestParam int page) {
+    // return productService.sortProductByPriceDesc(pageSize, page);
     // }
 
-    // @GetMapping("/sort/{categoryId}/nameAsc")
-    // public List<Product> sortProductOfCategoryByNameAsc(@PathVariable int
-    // categoryId) {
-    // return productService.sortProductOfCategoryByNameAsc(categoryId);
+    // @GetMapping("/{searchProduct}/nameAsc")
+    // public Iterable<Product> findProductByNameSortByNameAsc(@PathVariable String
+    // searchProduct,
+    // @RequestParam int pageSize, @RequestParam int page) {
+    // return productService.findProductByNameSortByNameAsc(searchProduct, pageSize,
+    // page);
     // }
 
-    // @GetMapping("/sort/{categoryId}/nameDesc")
-    // public List<Product> sortProductOfCategoryByNameDesc(@PathVariable int
-    // categoryId) {
-    // return productService.sortProductOfCategoryByNameDesc(categoryId);
+    // @GetMapping("/{searchProduct}/nameDesc")
+    // public Iterable<Product> findProductByNameSortByNameDesc(@PathVariable String
+    // searchProduct,
+    // @RequestParam int pageSize, @RequestParam int page) {
+    // return productService.findProductByNameSortByNameAsc(searchProduct, pageSize,
+    // page);
     // }
 
-    // @GetMapping("/sort/{categoryId}/priceAsc")
-    // public List<Product> sortProductOfCategoryByPriceAsc(@PathVariable int
-    // categoryId) {
-    // return productService.sortProductOfCategoryByPriceAsc(categoryId);
+    // @GetMapping("/{searchProduct}/priceAsc")
+    // public Iterable<Product> findProductByNameSortByPriceAsc(@PathVariable String
+    // searchProduct,
+    // @RequestParam int pageSize, @RequestParam int page) {
+    // return productService.findProductByNameSortByNameAsc(searchProduct, pageSize,
+    // page);
     // }
 
-    // @GetMapping("/sort/{categoryId}/priceDesc")
-    // public List<Product> sortProductOfCategoryByPriceDesc(@PathVariable int
-    // categoryId) {
-    // return productService.sortProductOfCategoryByPriceDesc(categoryId);
+    // @GetMapping("/{searchProduct}/priceDesc")
+    // public Iterable<Product> findProductByNameSortByPriceDesc(@PathVariable
+    // String searchProduct,
+    // @RequestParam int pageSize, @RequestParam int page) {
+    // return productService.findProductByNameSortByNameAsc(searchProduct, pageSize,
+    // page);
     // }
+
 }

@@ -26,23 +26,34 @@ public interface ProductService {
 
     public Optional<Product> getProductById(int productId);
 
-    public Iterable<Product> getPaginationDataProduct(int pageSize, int page);
+    public List<Product> findProductTypeProduct();
 
-    // public Iterable<Product> filterProduct(String searchProduct);
+    public List<Product> findProductTypePackage();
 
-    // public List<Product> sortProductByNameAsc();
+    public Product addProductToPackage(int productId, int packageId);
 
-    // public List<Product> sortProductByNameDesc();
+    public List<Product> getNewestItem();
 
-    // public List<Product> sortProductByPriceAsc();
+    // public Iterable<Product> getPaginationDataProduct(int pageSize, int page);
 
-    // public List<Product> sortProductByPriceDesc();
+    // public Iterable<Product> sortProductByNameAsc(int pagesize, int page);
 
-    // public List<Product> sortProductOfCategoryByNameAsc(int categoryId);
+    // public Iterable<Product> sortProductByNameDesc(int pagesize, int page);
 
-    // public List<Product> sortProductOfCategoryByNameDesc(int categoryId);
+    // public Iterable<Product> sortProductByPriceAsc(int pagesize, int page);
 
-    // public List<Product> sortProductOfCategoryByPriceAsc(int categoryId);
+    // public Iterable<Product> sortProductByPriceDesc(int pagesize, int page);
 
-    // public List<Product> sortProductOfCategoryByPriceDesc(int categoryId);
+    // public Iterable<Product> findProductByNameSortByNameAsc(String searchProduct,
+    // int pageSize, int page);
+
+    // public Iterable<Product> findProductByNameSortByNameDesc(String
+    // searchProduct, int pageSize, int page);
+
+    // public Iterable<Product> findProductByNameSortByPriceAsc(String
+    // searchProduct, int pageSize, int page);
+
+    // public Iterable<Product> findProductByNameSortByPriceDesc(String
+    // searchProduct, int pageSize, int page);
+
 }

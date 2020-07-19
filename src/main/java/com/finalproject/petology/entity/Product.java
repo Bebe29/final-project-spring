@@ -12,7 +12,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "products")
@@ -35,6 +38,14 @@ public class Product {
     @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH })
     @JoinTable(name = "package_product", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "package_id"))
     private List<Package> packages;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Cart> carts;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<TransactionDetail> transactionDetails;
 
     public int getId() {
         return id;
@@ -108,11 +119,28 @@ public class Product {
         this.packages = packages;
     }
 
+    public List<Cart> getCarts() {
+        return carts;
+    }
+
+    public void setCarts(List<Cart> carts) {
+        this.carts = carts;
+    }
+
+    public List<TransactionDetail> getTransactionDetails() {
+        return transactionDetails;
+    }
+
+    public void setTransactionDetails(List<TransactionDetail> transactionDetails) {
+        this.transactionDetails = transactionDetails;
+    }
+
     @Override
     public String toString() {
-        return "Product [category=" + category + ", id=" + id + ", image=" + image + ", packages=" + packages
-                + ", price=" + price + ", productDescription=" + productDescription + ", productName=" + productName
-                + ", stock=" + stock + ", type=" + type + "]";
+        return "Product [carts=" + carts + ", category=" + category + ", id=" + id + ", image=" + image + ", packages="
+                + packages + ", price=" + price + ", productDescription=" + productDescription + ", productName="
+                + productName + ", stock=" + stock + ", transactionDetails=" + transactionDetails + ", type=" + type
+                + "]";
     }
 
 }
